@@ -3,11 +3,11 @@ import pymysql.cursors
 
 # Connect to the database
 
-connection = pymysql.connect(host='localhost', user = "test" , password = "password" , cursorclass=pymysql.cursors.DictCursor)
+connection = pymysql.connect(host='localhost', user = "root" , password = "password" , cursorclass=pymysql.cursors.DictCursor)
 
 
 with connection.cursor() as cur:
-    query = "USE COMPANY"
+    query = "USE ELECTION"
     cur.execute(query)
 
     
