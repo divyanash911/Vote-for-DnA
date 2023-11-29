@@ -13,4 +13,10 @@ DnA project repository for group project by Divyansh , Hemang , Aniket , Sanfat
 mysqldump -u "root" -p "COMPANY" > dump.sql 
 ``` 
 </li>
+<li>To import (update your database use the below command)
+
+```
+mysql -u "root" -p "COMPANY" < dump.sql
+```
+</li>
 </ul>
