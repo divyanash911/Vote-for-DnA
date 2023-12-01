@@ -19,4 +19,7 @@ mysqldump -u "root" -p "COMPANY" > dump.sql
 mysql -u "root" -p "COMPANY" < dump.sql
 ```
 </li>
+<li>
+Tables have been created and are in try.sql..
+</li>
 </ul>
