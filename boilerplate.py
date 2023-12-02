@@ -2,69 +2,321 @@ import subprocess as sp
 import pymysql
 import pymysql.cursors
 
+def option1():
+    """
+    Function to implement option 1
+    """
+    tmp = sp.call('clear', shell=True)
+    print("Enter your choice:")
+    print("1. Add a new candidate")
+    print("2. Add a new voter")
+    print("3. Add a new political party")
+    ch = int(input("Enter choice> "))
+
+    if ch == 1:
+        print("Enter candidate details:")
+        candidate_id = int(input("Enter candidate id: "))
+        name = input("Enter candidate name: ")
+        aadhar_no = int(input("Enter candidate aadhar no: "))
+        source_of_funding = input("Enter candidate source of funding: ")
+        total_donations = int(input("Enter candidate total donations: "))
+        total_funding_received = int(input("Enter candidate total funding received: "))
+        total_expenditure = int(input("Enter candidate total expenditure: "))
+        party_id = int(input("Enter candidate party id: "))
+        constituency_id = int(input("Enter candidate constituency id: "))
+        candidate = Candidate(candidate_id, name, aadhar_no, source_of_funding, total_donations,
+                                total_funding_received, total_expenditure, party_id, constituency_id)
+        
+        try:
+            with con.cursor() as cur:
+                query = f"INSERT INTO Candidate VALUES ({candidate_id}, '{name}', {aadhar_no}, '{source_of_funding}', {total_donations}, {total_funding_received}, {total_expenditure}, {party_id}, {constituency_id});"
+                cur.execute(query)
+                con.commit()
+                print("Candidate added successfully!")
+        except Exception as e:
+            print("Error: ", e)
+            print("Candidate not added!")
+
+    elif ch == 2:
+        print("Enter voter details:")
+        voter_id = int(input("Enter voter id: "))
+        name = input("Enter voter name: ")
+        aadhar_no = int(input("Enter voter aadhar no: "))
+        constituency_id = int(input("Enter voter constituency id: "))
+        
+        try:
+            with con.cursor() as cur:
+                query = f"INSERT INTO voter VALUES ({voter_id}, '{name}', {aadhar_no}, {constituency_id});"
+                cur.execute(query)
+                con.commit()
+                print("Voter added successfully!")
+        except Exception as e:
+            print("Error: ", e)
+            print("Voter not added!")
+
+    elif ch == 3:
+        print("Enter political party details:")
+        party_id = int(input("Enter party id: "))
+        name = input("Enter party name: ")
+        symbol = input("Enter party symbol: ")
+        leader = input("Enter party leader: ")
+        
+        try:
+            with con.cursor() as cur:
+                query = f"INSERT INTO Political_Party VALUES ({party_id}, '{name}', '{symbol}', '{leader}');"
+                cur.execute(query)
+                con.commit()
+                print("Political party added successfully!")
+        except Exception as e:
+            print("Error: ", e)
+            print("Political party not added!")
+
+    else:
+        print("Error: Invalid choice")
 
 def option2():
     """
     Function to implement option 1
     """
-    print("Not implemented")
+    tmp = sp.call('clear', shell=True)
+
+    print("Enter your choice:")
+    print("1. Update candidate details")
+    print("2. Update voter details")
+    print("3. Update political party details")
+    ch = int(input("Enter choice> "))
+
+    if ch == 1:
+        print("Enter candidate_id of candidate to be updated:")
+        candidate_id = int(input("Enter candidate id: "))
+        
+        with con.cursor() as cur:
+            query = f"SELECT * FROM Candidate WHERE candidate_id = {candidate_id};"
+            cur.execute(query)
+            result = cur.fetchone()
+            if result is None:
+                print("Candidate not found!")
+                return
+            else:
+                
+                # print("Enter number of attributes to be updated:")
+                n = int(input("Enter number of attributes: "))
+                list = []
+                for i in range(n):
+                    # print("Enter attribute_name and new value:")
+                    attribute_name,value = input("Enter attribute name and value: ")
+                    list.append((attribute_name,value))
+                
+                for i in range(n):
+                    
+                    try:
+                        with con.cursor() as cur:
+                            query = f"UPDATE Candidate SET {list[i][0]} = {list[i][1]} WHERE candidate_id = {candidate_id};"
+                            cur.execute(query)
+                            con.commit()
+                            print("Candidate updated successfully!")
+                    except Exception as e:
+                        print("Error: ", e)
+                        print("Invalid attribute/value not updated!")
+                    
+    elif ch == 2:
+        print("Enter voter_id of voter to be updated:")
+        voter_id = int(input("Enter voter id: "))
+        
+        with con.cursor() as cur:
+            query = f"SELECT * FROM Voter WHERE voter_id = {voter_id};"
+            cur.execute(query)
+            result = cur.fetchone()
+            if result is None:
+                print("Voter not found!")
+                return
+            else:
+                
+                # print("Enter number of attributes to be updated:")
+                n = int(input("Enter number of attributes: "))
+                list = []
+                for i in range(n):
+                    # print("Enter attribute_name and new value:")
+                    attribute_name,value = input("Enter attribute name and value: ")
+                    list.append((attribute_name,value))
+                
+                for i in range(n):
+                    
+                    try:
+                        with con.cursor() as cur:
+                            query = f"UPDATE voter SET {list[i][0]} = {list[i][1]} WHERE voter_id = {voter_id};"
+                            cur.execute(query)
+                            con.commit()
+                            print("Voter updated successfully!")
+                    except Exception as e:
+                        print("Error: ", e)
+                        print("Invalid attribute/value not updated!")
+
+    elif ch == 3:
+
+        print("Enter party_id of political party to be updated:")
+        party_id = int(input("Enter party id: "))
+        
+        with con.cursor() as cur:
+            query = f"SELECT * FROM Political_Party WHERE party_id = {party_id};"
+            cur.execute(query)
+            result = cur.fetchone()
+            if result is None:
+                print("Political party not found!")
+                return
+            else:
+                
+                # print("Enter number of attributes to be updated:")
+                n = int(input("Enter number of attributes: "))
+                list = []
+                for i in range(n):
+                    # print("Enter attribute_name and new value:")
+                    attribute_name,value = input("Enter attribute name and value: ")
+                    list.append((attribute_name,value))
+                
+                for i in range(n):
+                    
+                    try:
+                        with con.cursor() as cur:
+                            query = f"UPDATE Political_Party SET {list[i][0]} = {list[i][1]} WHERE party_id = {party_id};"
+                            cur.execute(query)
+                            con.commit()
+                            print("Political party updated successfully!")
+                    except Exception as e:
+                        print("Error: ", e)
+                        print("Invalid attribute/value not updated!")
+    
+    else:
+        print("Error: Invalid choice")
+
 
 
 def option3():
     """
     Function to implement option 2
     """
-    print("Not implemented")
+    tmp = sp.call('clear', shell=True)
+
+    print("Enter your choice:")
+    print("1. Delete a candidate")
+    print("2. Delete a voter")
+    print("3. Delete a political party")
+    ch = int(input("Enter choice> "))
+
+    if ch == 1:
+        print("Enter candidate_id of candidate to be deleted:")
+        candidate_id = int(input("Enter candidate id: "))
+        
+        with con.cursor() as cur:
+            query = f"SELECT * FROM Candidate WHERE candidate_id = {candidate_id};"
+            cur.execute(query)
+            result = cur.fetchone()
+            if result is None:
+                print("Candidate not found!")
+                return
+            else:
+                
+                try:
+                    with con.cursor() as cur:
+                        query = f"DELETE FROM Candidate WHERE candidate_id = {candidate_id};"
+                        cur.execute(query)
+                        con.commit()
+                        print("Candidate deleted successfully!")
+                except Exception as e:
+                    print("Error: ", e)
+                    print("Candidate not deleted!")
+                    
+    elif ch == 2:
+        print("Enter voter_id of voter to be deleted:")
+        voter_id = int(input("Enter voter id: "))
+        
+        with con.cursor() as cur:
+            query = f"SELECT * FROM Voter WHERE voter_id = {voter_id};"
+            cur.execute(query)
+            result = cur.fetchone()
+            if result is None:
+                print("Voter not found!")
+                return
+            else:
+                
+                try:
+                    with con.cursor() as cur:
+                        query = f"DELETE FROM Voter WHERE voter_id = {voter_id};"
+                        cur.execute(query)
+                        con.commit()
+                        print("Voter deleted successfully!")
+                except Exception as e:
+                    print("Error: ", e)
+                    print("Voter not deleted!")
+
+    elif ch == 3:
+
+        print("Enter party_id of political party to be deleted:")
+        party_id = int(input("Enter party id: "))
+        
+        with con.cursor() as cur:
+            query = f"SELECT * FROM Political_Party WHERE party_id = {party_id};"
+            cur.execute(query)
+            result = cur.fetchone()
+            if result is None:
+                print("Political party not found!")
+                return
+            else:
+                
+                try:
+                    with con.cursor() as cur:
+                        query = f"DELETE FROM Political_Party WHERE party_id = {party_id};"
+                        cur.execute(query)
+                        con.commit()
+                        print("Political party deleted successfully!")
+                except Exception as e:
+                    print("Error: ", e)
+                    print("Political party not deleted!")
 
 
 def option4():
     """
     Function to implement option 3
     """
-    print("Not implemented")
+    tmp = sp.call('clear',shell=True)
 
+    print("Enter your choice:")
+    print("1. Get total number of polling booths in a constituency")
+    print("2. Get maximum number of votes registered by a party in a constituency")
+    print("3. Get constituency which consumes least amount of resources")
 
-def hireAnEmployee():
-    """
-    This is a sample function implemented for the refrence.
-    This example is related to the Employee Database.
-    In addition to taking input, you are required to handle domain errors as well
-    For example: the SSN should be only 9 characters long
-    Sex should be only M or F
-    If you choose to take Super_SSN, you need to make sure the foreign key constraint is satisfied
-    HINT: Instead of handling all these errors yourself, you can make use of except clause to print the error returned to you by MySQL
-    """
-    try:
-        # Takes emplyee details as input
-        row = {}
-        print("Enter new employee's details: ")
-        name = (input("Name (Fname Minit Lname): ")).split(' ')
-        row["Fname"] = name[0]
-        row["Minit"] = name[1]
-        row["Lname"] = name[2]
-        row["Ssn"] = input("SSN: ")
-        row["Bdate"] = input("Birth Date (YYYY-MM-DD): ")
-        row["Address"] = input("Address: ")
-        row["Sex"] = input("Sex: ")
-        row["Salary"] = float(input("Salary: "))
-        row["Dno"] = int(input("Dno: "))
-
-        query = "INSERT INTO EMPLOYEE(Fname, Minit, Lname, Ssn, Bdate, Address, Sex, Salary, Dno) VALUES('%s', '%c', '%s', '%s', '%s', '%s', '%c', %f, %d)" % (
-            row["Fname"], row["Minit"], row["Lname"], row["Ssn"], row["Bdate"], row["Address"], row["Sex"], row["Salary"], row["Dno"])
-
-        print(query)
-        cur.execute(query)
-        con.commit()
-
-        print("Inserted Into Database")
-
-    except Exception as e:
-        con.rollback()
-        print("Failed to insert into database")
-        print(">>>>>>>>>>>>>", e)
-
-    return
-
+    ch = int(input("Enter choice> "))
+    if ch == 1:
+        constituency_id = int(input("Enter constituency id: "))
+        try:
+            with con.cursor() as cur:
+                query = f"SELECT SUM(Polling_Booths) FROM Constituency WHERE constituency_id = {constituency_id};"
+                cur.execute(query)
+                result = cur.fetchone()
+                if result is None:
+                    print("Constituency not found!")
+                    return
+                else:
+                    print("Total number of polling booths: ", result['SUM(Polling_Booths)'])
+        except Exception as e:
+            print("Error: ", e)
+            print("Invalid constituency id!")
+    
+    elif ch == 2:
+        constituency_id = int(input("Enter constituency id: "))
+        try:
+            with con.cursor() as cur:
+                query = f"SELECT MAX(Votes) FROM Constituency WHERE constituency_id = {constituency_id};"
+                cur.execute(query)
+                result = cur.fetchone()
+                if result is None:
+                    print("Constituency not found!")
+                    return
+                else:
+                    print("Maximum number of votes: ", result['MAX(Votes)'])
+        except Exception as e:
+            print("Error: ", e)
+            print("Invalid constituency id!")
 
 def dispatch(ch):
     """
@@ -72,13 +324,19 @@ def dispatch(ch):
     """
 
     if(ch == 1):
-        hireAnEmployee()
+        option1()
     elif(ch == 2):
         option2()
     elif(ch == 3):
         option3()
     elif(ch == 4):
         option4()
+    elif(ch == 5):
+        option5()
+    elif(ch == 6):
+        option6()
+    elif(ch == 7):
+        option7()
     else:
         print("Error: Invalid Option")
 
@@ -111,14 +369,18 @@ while(1):
             while(1):
                 tmp = sp.call('clear', shell=True)
                 # Here taking example of Employee Mini-world
-                print("1. Option 1")  # Hire an Employee
-                print("2. Option 2")  # Fire an Employee
-                print("3. Option 3")  # Promote Employee
-                print("4. Option 4")  # Employee Statistics
-                print("5. Logout")
+                print("1. Add a new candidate/voter/political party in the database:")  # Promote Employee
+                print("2. Update database entries:")
+                print("3. Delete a candidate/voter/political party from the database:")
+                print("4. Get election aggregates:")
+                print("5. Select data entities and retrieve their records:")
+                print("6. Project data from the database:")
+                print("7. Search the database:")
+                print("8. Get data analytics:")
+                print("9. Exit")
                 ch = int(input("Enter choice> "))
                 tmp = sp.call('clear', shell=True)
-                if ch == 5:
+                if ch == 9:
                     exit()
                 else:
                     dispatch(ch)
