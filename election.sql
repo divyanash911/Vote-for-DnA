@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `Candidate`;
 CREATE TABLE `Candidate` (
   `Candidate_ID` int NOT NULL,
   `Name` varchar(255) DEFAULT NULL,
-  `Aadhar_No` bigint DEFAULT NULL,
+  `Aadhar_No` int DEFAULT NULL,
   `Source_of_Funding` varchar(255) DEFAULT NULL,
   `Total_Donations` decimal(10,2) DEFAULT NULL,
   `Total_Funding_Received` decimal(10,2) DEFAULT NULL,
@@ -37,7 +37,6 @@ CREATE TABLE `Candidate` (
   KEY `Aadhar_No` (`Aadhar_No`),
   KEY `Constituency_ID` (`Constituency_ID`),
   CONSTRAINT `candidate_ibfk_1` FOREIGN KEY (`Party_ID`) REFERENCES `Political_Party` (`Party_ID`),
-  -- CONSTRAINT `candidate_ibfk_2` FOREIGN KEY (`Aadhar_No`) REFERENCES `citizen` (`Aadhar_No`),
   CONSTRAINT `candidate_ibfk_3` FOREIGN KEY (`Constituency_ID`) REFERENCES `Constituency` (`C_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -48,7 +47,7 @@ CREATE TABLE `Candidate` (
 
 LOCK TABLES `Candidate` WRITE;
 /*!40000 ALTER TABLE `Candidate` DISABLE KEYS */;
-INSERT INTO `Candidate` VALUES (1,'John Doe',1234567890,'Self-Funded',5000.00,5000.00,3000.00,1,1),(2,'Jane Smith',2345678901,'Donations',8000.00,10000.00,6000.00,2,2),(3,'Amit Patel',3456789012,'Party Funding',10000.00,12000.00,8000.00,1,3),(4,'Priya Sharma',4567890123,'Self-Funded',6000.00,6000.00,4000.00,2,4),(5,'Raj Kumar',5678901234,'Donations',7000.00,9000.00,5000.00,3,5);
+INSERT INTO `Candidate` VALUES (1,'John Doe',12345678,'Self-Funded',5000.00,5000.00,3000.00,1,1),(2,'Jane Smith',21474836,'Donations',8000.00,10000.00,6000.00,2,2),(3,'Amit Patel',21474836,'Party Funding',10000.00,12000.00,8000.00,1,3),(4,'Priya Sharma',21474836,'Self-Funded',6000.00,6000.00,4000.00,2,4),(5,'Raj Kumar',21474836,'Donations',7000.00,9000.00,5000.00,3,5);
 /*!40000 ALTER TABLE `Candidate` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +181,7 @@ CREATE TABLE `Employee` (
   `State` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `Super_ID` (`Super_ID`),
-  CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Super_ID`) REFERENCES `Employee` (`ID`)
+  CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`Super_ID`) REFERENCES `Employee` (`ID`)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -279,7 +278,7 @@ CREATE TABLE `Political_Party` (
 
 LOCK TABLES `Political_Party` WRITE;
 /*!40000 ALTER TABLE `Political_Party` DISABLE KEYS */;
-INSERT INTO `Political_Party` VALUES (1,'Indian National Congress','Sonia Gandhi','New Delhi','Hand',500000,200),(2,'Bharatiya Janata Party','J.P. Nadda','New Delhi','Lotus',550000,220),(3,'Aam Aadmi Party','Arvind Kejriwal','New Delhi','Broom',300000,150),(4,'Communist Party of India (Marxist)','Sitaram Yechury','New Delhi','Hammer and Sickle',100000,50),(5,'Shiv Sena','Uddhav Thackeray','Mumbai','Bow and Arrow',200000,100);
+INSERT INTO `Political_Party` VALUES (1,'Indian National Congress','Sonia Gandhi','New Delhi','Hand',500000,200),(2,'Bharatiya Janata Party','J.P. Nadda','New Delhi','Lotus',550000,220),(3,'Aam Aadmi Party','Arvind Kejriwal','New Delhi','Broom',300000,150),(4,'Communist Party of India (Marxist)','Sitaram Yechury','New Delhi','Hammer and Sickle',100000,50),(5,'Shiv Sena','Uddhav Thackeray','Mumbai','Bow and Arrow',200000,100),(6,'Bahujan Samaj Party (BSP)','Mayawati','New Delhi','Elephant',150000,75),(7,'Shiromani Akali Dal','Sukhbir Singh Badal','Chandigarh','Scales',100000,50);
 /*!40000 ALTER TABLE `Political_Party` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -402,7 +401,7 @@ DROP TABLE IF EXISTS `citizen`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `citizen` (
   `Citizen_ID` int NOT NULL,
-  `Aadhar_No` bigint DEFAULT NULL,
+  `Aadhar_No` int DEFAULT NULL,
   `Name` char(30) DEFAULT NULL,
   `DOB` date DEFAULT NULL,
   `Street_Address` char(100) DEFAULT NULL,
@@ -426,7 +425,6 @@ CREATE TABLE `citizen` (
 
 LOCK TABLES `citizen` WRITE;
 /*!40000 ALTER TABLE `citizen` DISABLE KEYS */;
-INSERT INTO `citizen` VALUES (1,1234567890,'John Doe','1990-05-15','123 Main St','M','Indian',500000,'Graduate','Maharashtra','Mumbai',400001,9876543210,'john.doe@email.com'),(2,2345678901,'Jane Smith','1985-08-22','456 Oak St','F','Indian',600000,'Postgraduate','Karnataka','Bangalore',560001,8765432109,'jane.smith@email.com'),(3,3456789012,'Amit Patel','1992-02-10','789 Pine St','M','Indian',400000,'Undergraduate','Gujarat','Ahmedabad',380001,7654321098,'amit.patel@email.com'),(4,4567890123,'Priya Sharma','1988-11-05','101 Cedar St','F','Indian',700000,'Postgraduate','Uttar Pradesh','Lucknow',226001,6543210987,'priya.sharma@email.com'),(5,5678901234,'Raj Kumar','1980-07-18','202 Maple St','M','Indian',800000,'Graduate','Tamil Nadu','Chennai',600001,5432109876,'raj.kumar@email.com');
 /*!40000 ALTER TABLE `citizen` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -518,7 +516,7 @@ DROP TABLE IF EXISTS `voter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voter` (
-  `Aadhar_No` bigint DEFAULT NULL,
+  `Aadhar_No` int DEFAULT NULL,
   `Voter_ID` int NOT NULL,
   `DOB` date DEFAULT NULL,
   `Street_Address` char(100) DEFAULT NULL,
@@ -543,7 +541,7 @@ CREATE TABLE `voter` (
 
 LOCK TABLES `voter` WRITE;
 /*!40000 ALTER TABLE `voter` DISABLE KEYS */;
-INSERT INTO `voter` VALUES (1234567890,1001,'1990-05-15','123 Main St','M','Indian',500000,'Graduate','Maharashtra','Mumbai',400001,'John Doe','Mumbai South'),(2345678901,1002,'1985-08-22','456 Oak St','F','Indian',600000,'Postgraduate','Karnataka','Bangalore',560001,'Jane Smith','Bangalore Central'),(3456789012,1003,'1992-02-10','789 Pine St','M','Indian',400000,'Undergraduate','Gujarat','Ahmedabad',380001,'Amit Patel','Ahmedabad South'),(4567890123,1004,'1988-11-05','101 Cedar St','F','Indian',700000,'Postgraduate','Uttar Pradesh','Lucknow',226001,'Priya Sharma','Lucknow Central'),(5678901234,1005,'1980-07-18','202 Maple St','M','Indian',800000,'Graduate','Tamil Nadu','Chennai',600001,'Raj Kumar','Chennai West');
+INSERT INTO `voter` VALUES (12345678,1001,'1990-05-15','123 Main St','M','Indian',500000,'Graduate','Maharashtra','Mumbai',400001,'John Doe','Mumbai South'),(23456789,1002,'1985-08-22','456 Oak St','F','Indian',600000,'Postgraduate','Karnataka','Bangalore',560001,'Jane Smith','Bangalore Central'),(34567890,1003,'1992-02-10','789 Pine St','M','Indian',400000,'Undergraduate','Gujarat','Ahmedabad',380001,'Amit Patel','Ahmedabad South'),(45678901,1004,'1988-11-05','101 Cedar St','F','Indian',700000,'Postgraduate','Uttar Pradesh','Lucknow',226001,'Priya Sharma','Lucknow Central'),(56789012,1005,'1980-07-18','202 Maple St','M','Indian',800000,'Graduate','Tamil Nadu','Chennai',600001,'Raj Kumar','Chennai West');
 /*!40000 ALTER TABLE `voter` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -556,4 +554,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-02  4:24:11
+-- Dump completed on 2023-12-03  2:56:02
